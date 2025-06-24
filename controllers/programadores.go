@@ -1,11 +1,12 @@
 package controllers
 
 import (
+	"context"
+
 	"github.com/avelar42/GoProgramadoresGOW/db"
 	"github.com/avelar42/GoProgramadoresGOW/models"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
-	"github.com/lib/pq"
 )
 
 func CriarProgramador(c *fiber.Ctx) error {
@@ -26,10 +27,14 @@ func CriarProgramador(c *fiber.Ctx) error {
 	id := uuid.New().String()
 
 	query := `
-	INSERT INTO programadores (id, apelido, nome, nascimento, stack)
-	VALUES ($1, $2, $3, $4, $5)
+		INSERT INTO programadores (id, apelido, nome, nascimento, stack)
+		VALUES ($1, $2, $3, $4, $5)
 	`
-	_, err := db.DB.Exec(query, id, p.Apelido, p.Nome, p.Nascimento, pq.Array(p.Stack))
+	_, err := db.Pool.Exec(
+		context.Background(),
+		query,
+		id, p.Apelido, p.Nome, p.Nascimento, p.Stack,
+	)
 	if err != nil {
 		return c.Status(422).SendString("Erro ao inserir: " + err.Error())
 	}
@@ -41,7 +46,7 @@ func CriarProgramador(c *fiber.Ctx) error {
 func ContarProgramadores(c *fiber.Ctx) error {
 	var count int
 
-	err := db.DB.QueryRow("SELECT COUNT(*) FROM programadores").Scan(&count)
+	err := db.Pool.QueryRow(context.Background(), "SELECT COUNT(*) FROM programadores").Scan(&count)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Erro ao contar programadores",
