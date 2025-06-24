@@ -2,8 +2,8 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE IF NOT EXISTS programadores (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  apelido TEXT UNIQUE NOT NULL,
-  nome TEXT NOT NULL,
+  apelido VARCHAR(100) UNIQUE NOT NULL,
+  nome VARCHAR(100) NOT NULL,
   nascimento DATE NOT NULL,
   stack TEXT[] NOT NULL
 );

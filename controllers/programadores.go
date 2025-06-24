@@ -19,7 +19,7 @@ func CriarProgramador(c *fiber.Ctx) error {
 	if p.Apelido == "" || p.Nome == "" || p.Nascimento == "" {
 		return c.Status(422).SendString("Campos obrigatórios ausentes")
 	}
-	if len(p.Apelido) > 32 || len(p.Nome) > 100 {
+	if len(p.Apelido) > 100 || len(p.Nome) > 100 {
 		return c.Status(422).SendString("Campos muito longos")
 	}
 
