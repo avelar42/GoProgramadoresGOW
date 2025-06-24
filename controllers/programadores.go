@@ -37,3 +37,18 @@ func CriarProgramador(c *fiber.Ctx) error {
 	c.Location("/programadores/" + id)
 	return c.SendStatus(201)
 }
+
+func ContarProgramadores(c *fiber.Ctx) error {
+	var count int
+
+	err := db.DB.QueryRow("SELECT COUNT(*) FROM programadores").Scan(&count)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Erro ao contar programadores",
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"total": count,
+	})
+}

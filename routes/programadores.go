@@ -7,4 +7,5 @@ import (
 
 func SetupRoutes(app *fiber.App) {
 	app.Post("/programadores", controllers.CriarProgramador)
+	app.Get("/contagem-programadores", controllers.ContarProgramadores)
 }
