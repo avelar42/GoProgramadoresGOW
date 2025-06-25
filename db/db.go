@@ -38,7 +38,7 @@ func Connect() {
 		// configurações de pool (ajuste conforme necessário)
 		cfg.MaxConns = 500
 		cfg.MinConns = 100
-		cfg.MaxConnLifetime = 5 * time.Minute
+		cfg.MaxConnLifetime = 60 * time.Minute
 
 		Pool, err = pgxpool.NewWithConfig(ctx, cfg)
 		if err != nil {
